@@ -27,17 +27,35 @@
         <form class="form-signin">
             <div class="text-center">
                 <h1 class="h3 mt-3 mb-3 font-weight-normal">註冊帳號</h1>
-                <label for="inputEmail" class="sr-only">Account（請輸入你錢包的地址）</label>
+                <label for="inputAddress" class="sr-only">Address</label>
                 <input type="text" id="signup_inputAddress" class="form-control mb-2" placeholder="Address" required
                     autofocus>
                 <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="signup_inputPassowrd" class="form-control mb-2" placeholder="Password"
+                <input type="password" id="signup_inputPassword" class="form-control mb-2" placeholder="Password"
                     required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">註冊</button>
+
+                <button type="submit" onclick="writeUserData()" class="btn btn-lg btn-primary btn-block" type="submit">註冊</button>
             </div>
         </form>
     </div>
 
+
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCJWMAcz0RZjgl5j-2kaOUM5XnGjzaK8Xs",
+            authDomain: "ethereum-aebc6.firebaseapp.com",
+            databaseURL: "https://ethereum-aebc6.firebaseio.com",
+            projectId: "ethereum-aebc6",
+            storageBucket: "ethereum-aebc6.appspot.com",
+            messagingSenderId: "142284354324"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <!---->
+    <script src="./js/writing.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
