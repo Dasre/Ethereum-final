@@ -27,21 +27,36 @@
         <form class="form-signin">
             <div class="text-center">
                 <h1 class="h3 mt-3 mb-3 font-weight-normal">註冊帳號</h1>
-                <label for="inputAddress" class="sr-only">Address</label>
-                <input type="text" id="signup_inputAddress" class="form-control mb-2" placeholder="Address" required
+
+                <label for="inputEmail" class="sr-only">Email</label>
+                <input type="email" id="signup_inputEmail" class="form-control mb-2" placeholder="Email" required
                     autofocus>
+
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input type="password" id="signup_inputPassword" class="form-control mb-2" placeholder="Password"
                     required>
 
-                <button type="submit" onclick="writeUserData()" class="btn btn-lg btn-primary btn-block" type="submit">註冊</button>
+                <label for="inputAddress" class="sr-only">Address</label>
+                <input type="text" id="signup_inputAddress" class="form-control mb-2" placeholder="Address" required>
+
+                <button name="signup" type="submit" id="quickstart-sign-up" class="btn btn-lg btn-primary btn-block">註冊</button>
+                <button disabled name="signin" type="submit" id="quickstart-sign-in" class="btn btn-lg btn-primary btn-block">登入</button>
+                <button nmae="verify-email" type="submit" id="quickstart-verify-email" class="btn btn-lg btn-primary btn-block">email認證</button>
+                <button name="verify-email" type="submit" id="quickstart-password-reset" class="btn btn-lg btn-primary btn-block">忘記密碼</button>
             </div>
         </form>
     </div>
 
+    <div class="quickstart-user-details-container">
+        Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+        <div>Firebase auth <code>currentUser</code> object value:</div>
+        <pre><code id="quickstart-account-details">null</code></pre>
+      </div>
+
 
     <!-- firebase -->
-    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -55,7 +70,7 @@
         firebase.initializeApp(config);
     </script>
     <!---->
-    <script src="./js/writing.js"></script>
+    <script src="./js/sign.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
