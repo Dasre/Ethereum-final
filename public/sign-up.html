@@ -36,47 +36,29 @@
                 <input type="password" id="signup_inputPassword" class="form-control mb-2" placeholder="Password"
                     required>
 
+                <!--
                 <label for="inputAddress" class="sr-only">Address</label>
                 <input type="text" id="signup_inputAddress" class="form-control mb-2" placeholder="Address" required>
-
+                -->
                 <button name="signup" type="submit" id="quickstart-sign-up" class="btn btn-lg btn-primary btn-block">註冊</button>
                 <button disabled name="signin" type="submit" id="quickstart-sign-in" class="btn btn-lg btn-primary btn-block">登入</button>
-                <button nmae="verify-email" type="submit" id="quickstart-verify-email" class="btn btn-lg btn-primary btn-block">email認證</button>
-                <button name="verify-email" type="submit" id="quickstart-password-reset" class="btn btn-lg btn-primary btn-block">忘記密碼</button>
+
             </div>
         </form>
     </div>
 
-    <div class="quickstart-user-details-container">
-        Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
-        <div>Firebase auth <code>currentUser</code> object value:</div>
-        <pre><code id="quickstart-account-details">null</code></pre>
-      </div>
 
-
-    <!-- firebase -->
 
     <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyCJWMAcz0RZjgl5j-2kaOUM5XnGjzaK8Xs",
-            authDomain: "ethereum-aebc6.firebaseapp.com",
-            databaseURL: "https://ethereum-aebc6.firebaseio.com",
-            projectId: "ethereum-aebc6",
-            storageBucket: "ethereum-aebc6.appspot.com",
-            messagingSenderId: "142284354324"
-        };
-        firebase.initializeApp(config);
-    </script>
-    <!---->
-    <script src="./js/sign.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+    <script src="./js/sign.js"></script>
 </body>
 
 </html>

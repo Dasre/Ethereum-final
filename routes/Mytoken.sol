@@ -10,12 +10,16 @@ import "./ERC20Detailed.sol";
  * `ERC20` functions.
  */
 contract Mytoken is ERC20, ERC20Detailed {
-    uint256 public INITIAL_SUPPLY = 10000 * (10 ** uint256(decimals()));
-
-    /**
-     * @dev Constructor that gives msg.sender all of existing tokens.
-     */
-    constructor () public payable ERC20Detailed("TEE", "T", 18) {
-        _mint(msg.sender, INITIAL_SUPPLY);
-    }
+    constructor(
+    string _name,
+    string _symbol,
+    uint8 _decimals,
+    uint256 _amount
+  )ERC20Detailed(_name, _symbol, _decimals)public
+  {
+    require(_amount > 0, "amount has to be greater than 0");
+    totalSupply_ = _amount.mul(10 ** uint256(_decimals));
+    balances[msg.sender] = totalSupply_;
+    emit Transfer(address(0), msg.sender, totalSupply_);
+  }
 }
