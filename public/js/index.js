@@ -45,6 +45,9 @@ let transferTo = $('#transferTo');
 let transferValue = $('#transferValue');
 let transferButton = $('#transferButton');
 
+let balance = $('#balance');
+let balanceOf = $('#balanceOf');
+
 // TODO
 // ...
 
@@ -121,19 +124,20 @@ update.on('click', function () {
 	if (bankAddress != "") {
 		$.get('/allBalance', {
 			address: bankAddress,
-			account: nowAccount
+			account: nowAccount,
+			to: nowAccount
 		}, function (result) {
 			log({
 				address: nowAccount,
 				ethBalance: result.ethBalance,
-				bankBalance: result.bankBalance,
-				coinBalance: result.coinBalance
+				total: result.total,
+				balance: result.balance
 			})
 			log('更新帳戶資料')
 
 			$('#ethBalance').text('以太帳戶餘額 (wei): ' + result.ethBalance)
-			$('#bankBalance').text('銀行ETH餘額 (wei): ' + result.bankBalance)
-			$('#nccucoinBalance').text('NCCU COIN餘額: ' + result.coinBalance)
+			$('#bankBalance').text('ERC20 token total: ' + result.total)
+			$('#nccucoinBalance').text('ERC20 token: ' + result.balance)
 		})
 	}
 	else {
@@ -289,7 +293,6 @@ transferEtherButton.on('click', async function () {
 		value: parseInt(transferEtherValue.val(), 10)
 	}, function (result) {
 		if (result.events !== undefined) {
-			log(result.events.TransferEvent.returnValues, '轉帳成功')
 
 			// 觸發更新帳戶資料
 			update.trigger('click')
@@ -328,10 +331,10 @@ mintCoinButton.on('click', async function() {
 	$.post('/mintCoin', {
 		address: bankAddress,
 		account: nowAccount,
+		to: nowAccount,
 		value: parseInt(mintCoin.val(), 10),
 	}, function (result) {
 		if (result.events !== undefined) {
-			log(result.events.MintEvent.returnValues, '鑄Coin成功')
 
 			// 觸發更新帳戶資料
 			update.trigger('click')
@@ -347,6 +350,8 @@ mintCoinButton.on('click', async function() {
 	})
 })
 
+
+/** 
 // 購買Coin
 buyCoinButton.on('click', async function(){
 	
@@ -447,7 +452,6 @@ transferOwnerButton.on('click', async function(){
         newOwner: transferOwner.val(),
     }, function (result) {
         if (result.events !== undefined) {
-            log(result.events.TransferOwnerEvent.returnValues, 'TransferOwner')
 
             // 觸發更新帳戶資料
             update.trigger('click');
@@ -464,17 +468,39 @@ transferOwnerButton.on('click', async function(){
 })
 
 // 檢查 owner
-getOwnerButton.on('click', function(){
+getOwnerButton.on('click',async function(){
 	if (bankAddress == "") {
 		return;
 	}
-	
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+	// 轉帳
 	$.get('/owner', {
-		address: bankAddress,
-		account: nowAccount,
-	}, function (result){
-		$('#getOwner').text('Owner帳戶: '+ result);
-	})
+        address: bankAddress,
+        account: nowAccount,
+        to: nowAccount,
+    }, function (result) {
+        if (result.events !== undefined) {
+
+            // 觸發更新帳戶資料
+            update.trigger('click');
+
+            // 更新介面
+            doneTransactionStatus()
+        }
+        else {
+            log(result);
+            // 更新介面
+            doneTransactionStatus()
+        }
+    })
 	
 })
 
@@ -515,7 +541,7 @@ transferButton.on('click', async function() {
 		}
 	})
 })
-
+*/
 
 // 載入bank合約
 function loadBank(address) {
