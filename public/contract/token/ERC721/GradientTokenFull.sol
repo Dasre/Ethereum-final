@@ -62,7 +62,6 @@ contract IERC721Metadata is IERC721 {
     function tokenURI(uint256 tokenId) external view returns (string);
 }
 
-pragma solidity ^0.4.24;
 
 /**
  * @title ERC721 token receiver interface

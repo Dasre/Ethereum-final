@@ -35,7 +35,7 @@ let gasEstimate = web3.eth.estimateGas({
 */
 
 const contract = require('../public/contract/token/ERC20/Mytokenfull.json');
-const ERC721 = require('../public/contract/token/ERC721/GradientTokenfull.json');
+const ERC721j = require('../public/contract/token/ERC721/GradientTokenfull.json');
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   res.render('index')
@@ -66,16 +66,27 @@ router.get('/allBalance', async function (req, res, next) {
   let balance = await bank.methods.balanceOf(req.query.account).call({
     from: req.query.account
   })
-  //let balance = await bank.methods.balanceOf().call({from: req.query.account})
-  //let bankBalance = await bank.methods.totalSupply().call({
-  //from: req.query.account
-  //let coinBalance = await bank.methods.getCoinBalance().call({
-  //from: req.query.account
-
   res.send({
     ethBalance: ethBalance,
     total: total,
     balance: balance
+    //coinBalance: coinBalance,
+  })
+});
+router.get('/allBalance2', async function (req, res, next) {
+  let bank = new web3.eth.Contract(ERC721j.abi);
+  bank.options.address = req.query.address;
+  let ethBalance = await web3.eth.getBalance(req.query.account)
+  //let isMinter = await bank.methods.isMinter().call({
+    //from: req.query.account
+  //})
+  let count = await bank.methods.balanceOf(req.query.account).call({
+    from: req.query.account
+  })
+  res.send({
+    ethBalance: ethBalance,
+    //isMinter: isMinter,
+    count: count
     //coinBalance: coinBalance,
   })
 });
@@ -105,6 +116,23 @@ router.post('/deploy', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.deploy({
       data: contract.bytecode
+    })
+    .send({
+      from: req.body.account,
+      gas: 3400000
+    })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
+
+router.post('/deploy2', function (req, res, next) {
+  let bank = new web3.eth.Contract(ERC721j.abi);
+  bank.deploy({
+      data: ERC721j.bytecode
     })
     .send({
       from: req.body.account,
@@ -217,6 +245,38 @@ router.post('/mintCoin', function (req, res, next) {
       res.send(error.toString());
     })
 });
+
+router.post('/mint', function (req, res, next) {
+  // TODO
+  // ...
+  let bank = new web3.eth.Contract(ERC721j.abi);
+  bank.options.address = req.body.address;
+  bank.methods.mint(req.body.to, req.body.value).send({
+      from: req.body.account,
+      gas: 3400000
+    })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
+
+router.post('/transferFrom', function(req, res, next){
+  let bank = new web3.eth.Contract(ERC721j.abi);
+  bank.options.address = req.body.address;
+  bank.methods.transferFrom(req.body.account, req.body.to, req.body.value).send({
+      from: req.body.account,
+      gas: 3400000
+    })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+})
 /** 
 //buy Coin
 router.post('/buyCoin', function (req, res, next) {
@@ -274,69 +334,5 @@ router.post('/transferOwner', function (req, res, next) {
     })
 });
 */
-
-//transfer ether to other address
-router.post('/transferTo', async function (req, res, next) {
-  // TODO
-  // ...
-  /** 
-  let result = web3.eth.estimateGas({
-    from: req.body.account,
-    to: req.body.to,
-    value: req.body.value,
-  });
-  */
-  var gas = await web3.eth.estimateGas({
-    from: req.body.account,
-    to: req.body.to,
-    value: req.body.value,
-  })
-  console.log(gas.toString());
-
-
-  var transferAmount = await web3.utils.toWei(req.body.value, 'ether');
-  console.log(typeof (transferAmount));
-  console.log(transferAmount);
-
-  web3.eth.getGasPrice().then(gasPrice => {
-    console.log('gasPrice = ' + gasPrice);
-
-    var x = gas * gasPrice;
-    console.log(x);
-    var real = transferAmount - x;
-    console.log(real)
-
-    web3.eth.sendTransaction({
-        from: req.body.account,
-        to: req.body.to,
-        value: real,
-      })
-      .on("receipt", function (receipt) {
-        res.send(receipt);
-      })
-      .on("error", function (error) {
-        res.send(error.toString());
-      })
-
-  });
-  
-
-  /** 
-  var total = web3.utils.toWei(gas * gasPrice,'ether');
-  var real = web3.utils.toBN(transferAmount - total);
-   //var real = req.body.value - result;
-  web3.eth.sendTransaction({
-    from: req.body.account,
-    to: req.body.to,
-    value: real,
-  })
-  .on("receipt", function(receipt) {
-    res.send(receipt);
-  })
-  .on("error", function(error) {
-    res.send(error.toString());
-  })
-  */
-});
 
 module.exports = router;

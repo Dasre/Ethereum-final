@@ -20,9 +20,11 @@
 		<div class="item">
 			<h3>銀行合約</h3>
 			<h5 id="contractAddress">合約位址: </h5>
+			<h5 id="contractAddress2">ERC721:</h5>
 			<input id="deployedContractAddressInput" type="text" placeholder="請輸入既有合約位址" />
 			<button id="loadDeployedContractButton">載入既有合約位址</button>
-			<button id="deployNewContractButton">部署新合約</button>
+			<button id="deployNewContractButton">部署ERC20</button>
+			<button id="deployNewContractButton2">部署ERC721</button>
 
 			<!--
 			<hr>
@@ -41,6 +43,12 @@
 			<h5 id="ethBalance">以太帳戶餘額 (wei): </h5>
 			<h5 id="bankBalance">ERC20 token total: </h5>
 			<h5 id="nccucoinBalance">ERC20 token: </h5>
+
+			<hr>
+			<h3 id="accountStatus">帳戶狀態</h3>
+			<h5 id="ethBalance2">以太帳戶餘額 (wei): </h5>
+			<h5 id="bankBalance2">isMinter : </h5>
+			<h5 id="nccucoinBalance2">count: </h5>
 			<!--
 				TODO
 				...
@@ -49,6 +57,7 @@
 			<hr>
 			<h3 id="updateCoin">更新餘額</h3>
 			<button id="update">執行</button>
+			<button id="update2">執行</button>
 
 			<!--
 			<hr>
@@ -78,6 +87,12 @@
 			<h3>鑄ERC721 (帳戶請選擇合約的owner)</h3>
 			<input id="mintERC721" type="text" placeholder="請輸入nccu coin金額">
 			<button id="mintERC721Button">執行</button>
+
+			<hr>
+			<h3>交易ERC721 (帳戶請選擇合約的owner)</h3>
+			<input id="transferERC721_ID" type="text" placeholder="請輸入token ID">
+			<input id="transferERC721_TO" type="text" placeholder="給誰">
+			<button id="transferERC721Button">執行</button>
 			<!--
 			<hr>
 			<h3>購買NCCU Coin</h3>

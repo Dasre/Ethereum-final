@@ -1,9 +1,11 @@
 'use strict'
 
 let contractAddress = $('#contractAddress');
+let contractAddress2 = $('#contractAddress2')
 let deployedContractAddressInput = $('#deployedContractAddressInput');
 let loadDeployedContractButton = $('#loadDeployedContractButton');
 let deployNewContractButton = $('#deployNewContractButton');
+let deployNewContractButton2 = $('#deployNewContractButton2');
 
 let killContractButton = $('#killContractButton')
 
@@ -12,6 +14,7 @@ let whoamiButton = $('#whoamiButton');
 let copyButton = $('#copyButton');
 
 let update = $('#update');
+let update2 = $('#update2');
 
 let logger = $('#logger');
 
@@ -48,10 +51,18 @@ let transferButton = $('#transferButton');
 let balance = $('#balance');
 let balanceOf = $('#balanceOf');
 
+let mintERC721 = $('#mintERC721');
+let mintERC721Button = $('#mintERC721Button');
+
+let transferERC721_ID = $('#transferERC721_ID');
+let transferERC721_TO = $('#transferERC721_TO');
+let transferERC721Button = $('#transferERC721Button');
+
 // TODO
 // ...
 
 let bankAddress = "";
+let bankAddress2 = "";
 let nowAccount = "";
 
 function log(...inputs) {
@@ -71,6 +82,7 @@ $.get('/accounts', function (accounts) {
 	nowAccount = whoami.val();
 
 	update.trigger('click')
+	update2.trigger('click')
 
 	log(accounts, '以太帳戶')
 })
@@ -81,6 +93,10 @@ loadDeployedContractButton.on('click', function () {
 })
 
 // 當按下部署合約時
+deployNewContractButton2.on('click', function () {
+	newBank2()
+})
+
 deployNewContractButton.on('click', function () {
 	newBank()
 })
@@ -147,6 +163,37 @@ update.on('click', function () {
 			$('#ethBalance').text('以太帳戶餘額 (wei): ' + result.ethBalance)
 			$('#bankBalance').text('銀行ETH餘額 (wei): ')
 			$('#nccucoinBalance').text('NCCU COIN餘額: ')
+		})
+	}
+})
+
+update2.on('click', function () {
+	if (bankAddress2 != "") {
+		$.get('/allBalance2', {
+			address: bankAddress2,
+			account: nowAccount,
+			to: nowAccount
+		}, function (result) {
+			log({
+				address: nowAccount,
+				ethBalance: result.ethBalance,
+				//total: result.total,
+				count: result.count
+			})
+			log('更新帳戶資料')
+
+			$('#ethBalance2').text('以太帳戶餘額 (wei): ' + result.ethBalance)
+			//$('#bankBalance2').text('isMinter: ' + result.isMinter)
+			$('#nccucoinBalance2').text('count: ' + result.count)
+		})
+	}
+	else {
+		$.get('/balance', {
+			account: nowAccount
+		}, function (result) {
+			$('#ethBalance2').text('以太帳戶餘額 (wei): ' + result.ethBalance)
+			$('#bankBalance2').text('isMinter : ')
+			$('#nccucoinBalance2').text('count: ')
 		})
 	}
 })
@@ -350,6 +397,84 @@ mintCoinButton.on('click', async function() {
 	})
 })
 
+
+// 鑄ERC721
+mintERC721Button.on('click', async function() {
+
+	if (bankAddress2 == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+
+	//鑄Coin
+	$.post('/mint', {
+		address: bankAddress2,
+		account: nowAccount,
+		to: nowAccount,
+		value: parseInt(mintERC721.val(), 10),
+	}, function (result) {
+		if (result.events !== undefined) {
+
+			// 觸發更新帳戶資料
+			update2.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
+
+//交易 ERC721
+transferERC721Button.on('click', async function() {
+
+	if (bankAddress2 == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+
+	//鑄Coin
+	$.post('/transferFrom', {
+		address: bankAddress2,
+		account: nowAccount,
+		to: transferERC721_TO.val(),
+		value: parseInt(transferERC721_ID.val(), 10),
+	}, function (result) {
+		if (result.events !== undefined) {
+
+			// 觸發更新帳戶資料
+			update2.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
 
 /** 
 // 購買Coin
@@ -588,6 +713,36 @@ async function newBank() {
 			deployedContractAddressInput.val(result.contractAddress)
 
 			update.trigger('click');
+
+			// 更新介面
+			doneTransactionStatus();
+		}
+	})
+}
+
+async function newBank2() {
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+
+	$.post('/deploy2', {
+		account: nowAccount
+	}, function (result) {
+		if (result.contractAddress) {
+			log(result, '部署合約')
+
+			// 更新合約介面
+			bankAddress2 = result.contractAddress
+			contractAddress2.text('ERC721:' + result.contractAddress)
+			//deployedContractAddressInput.val(result.contractAddress)
+
+			update2.trigger('click');
 
 			// 更新介面
 			doneTransactionStatus();
