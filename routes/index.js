@@ -35,7 +35,7 @@ let gasEstimate = web3.eth.estimateGas({
 */
 
 const contract = require('../public/contract/token/ERC20/Mytokenfull.json');
-
+const ERC721 = require('../public/contract/token/ERC721/GradientTokenfull.json');
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   res.render('index')
