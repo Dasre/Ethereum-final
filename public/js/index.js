@@ -58,6 +58,9 @@ let transferERC721_ID = $('#transferERC721_ID');
 let transferERC721_TO = $('#transferERC721_TO');
 let transferERC721Button = $('#transferERC721Button');
 
+let many = $('#many');
+let many_TO = $('#many_TO');
+
 // TODO
 // ...
 
@@ -459,6 +462,69 @@ transferERC721Button.on('click', async function() {
 		account: nowAccount,
 		to: transferERC721_TO.val(),
 		value: parseInt(transferERC721_ID.val(), 10),
+	}, function (result) {
+		if (result.events !== undefined) {
+
+			// 觸發更新帳戶資料
+			update2.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
+
+
+many.on('click', async function() {
+	if (bankAddress == "") {
+		return;
+	}
+
+	if (bankAddress2 == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+
+	$.post('/many_money', {
+		address:bankAddress,
+		account:nowAccount,
+		to: many_TO.val(),
+		value: parseInt(20, 10),
+	}, function (result) {
+		if (result.events !== undefined) {
+
+			// 觸發更新帳戶資料
+			update1.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+
+	//鑄Coin
+	$.post('/transferFrom', {
+		address: bankAddress2,
+		account: nowAccount,
+		to: many_TO.val(),
+		value: parseInt(123, 10),
 	}, function (result) {
 		if (result.events !== undefined) {
 

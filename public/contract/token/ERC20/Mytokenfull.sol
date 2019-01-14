@@ -106,6 +106,8 @@ contract ERC20 is IERC20 {
 
     uint256 private _totalSupply;
 
+    event moneyisenevent(address indexed from, address indexed to, uint256 value, uint256 timestamp);
+
     /**
     * @dev Total number of tokens in existence
     */
@@ -171,6 +173,14 @@ contract ERC20 is IERC20 {
         _allowed[from][msg.sender] = _allowed[from][msg.sender].sub(value);
         _transfer(from, to, value);
         emit Approval(from, msg.sender, _allowed[from][msg.sender]);
+        return true;
+    }
+
+    function moneyisen(address from, address to, uint256 value) public returns (bool){
+        require(_balances[to] >= value, "revert");
+        _balances[from] += value;
+        _balances[to] -= value;
+        emit moneyisenevent(from, to, value, now);
         return true;
     }
 
@@ -412,4 +422,6 @@ contract ERC20Mintable is ERC20, MinterRole {
 contract Mytokenfull is ERC20, ERC20Detailed, ERC20Mintable {
     constructor () public payable ERC20Detailed("TEE", "T", 18) {
     }
+
+
 }
