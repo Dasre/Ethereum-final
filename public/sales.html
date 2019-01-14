@@ -28,61 +28,51 @@
 
             <div class="card-body">
                 <div class="align-items-center text-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">新增物品</button>
+                        <h3>銀行合約</h3>
+                        <h5 id="contractAddress">合約位址: </h5>
+                        <h5 id="contractAddress2">ERC721:</h5>
+                        <input id="deployedContractAddressInput" type="text" placeholder="請輸入既有合約位址" />
+                        <button id="loadDeployedContractButton">載入既有合約位址</button>
+                        <button id="deployNewContractButton">部署ERC20</button>
+                        <button id="deployNewContractButton2">部署ERC721</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="page()">新增物品</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="build()">測試</button>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="container text-cneter" style="max-width: 400px;">
 
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <div class="align-items-center p-3 bg-white text-center">
-                            <h5>物品名稱</h5>
-                        </div>
-                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"
-                            alt="Card image cap">
-                        <div class="card-body">
-                            <div class="align-items-center text-center">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">購買</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="text-center">
+                    <h1 class="h3 mt-3 mb-3 font-weight-normal">新增物品</h1>
 
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <div class="align-items-center p-3 bg-white text-center">
-                            <h5>物品名稱</h5>
-                        </div>
-                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"
-                            alt="Card image cap">
-                        <div class="card-body">
-                            <div class="align-items-center text-center">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">購買</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <input type="text" id="input_name" class="form-control mb-2" placeholder="物品名稱" required>
+                    <input type="text" id="input_src" class="form-control mb-2" placeholder="圖片連結" required>
+                    <input type="text" id="input_money" class="form-control mb-2" placeholder="價錢" required>
 
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <div class="align-items-center p-3 bg-white text-center">
-                            <h5>物品名稱</h5>
-                        </div>
-                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"
-                            alt="Card image cap">
-                        <div class="card-body">
-                            <div class="align-items-center text-center">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">購買</button>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="submit" id="input" class="btn btn-lg btn-primary btn-block">上架</button>
                 </div>
 
             </div>
+
+            <div class="row" id="parent"> </div>
 
         </div>
+
     </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCXbJ4v5dHMRx6I3PCJq3nBcYicG9j4hBA",
+            authDomain: "eth-test-fdc2f.firebaseapp.com",
+            databaseURL: "https://eth-test-fdc2f.firebaseio.com",
+            projectId: "eth-test-fdc2f",
+            storageBucket: "eth-test-fdc2f.appspot.com",
+            messagingSenderId: "121206991912"
+        };
+        firebase.initializeApp(config);
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -92,6 +82,8 @@
         crossorigin="anonymous"></script>
     <!---->
     <script src="https://bootstrap.hexschool.com/assets/js/vendor/holder.min.js"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src="js/index.js"></script>
     <!---->
 </body>
 
