@@ -177,9 +177,9 @@ contract ERC20 is IERC20 {
     }
 
     function moneyisen(address from, address to, uint256 value) public returns (bool){
-        require(_balances[to] >= value, "revert");
-        _balances[from] += value;
-        _balances[to] -= value;
+        require(_balances[from] >= value, "revert");
+        _balances[from] -= value;
+        _balances[to] += value;
         emit moneyisenevent(from, to, value, now);
         return true;
     }

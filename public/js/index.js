@@ -53,6 +53,8 @@ let balanceOf = $('#balanceOf');
 
 let mintERC721 = $('#mintERC721');
 let mintERC721Button = $('#mintERC721Button');
+let input = $('#input');
+let input_name = $('#input_name');
 
 let transferERC721_ID = $('#transferERC721_ID');
 let transferERC721_TO = $('#transferERC721_TO');
@@ -66,7 +68,7 @@ let many_TO = $('#many_TO');
 
 let bankAddress = "";
 let bankAddress2 = "";
-let nowAccount = "0xdec24d70468f1807354a16d085c2798a38724490";
+let nowAccount = "0xc04ca76280b7d73d28475f96bdb735ea7e4f94c5";
 
 function log(...inputs) {
 	for (let input of inputs) {
@@ -242,7 +244,7 @@ killContractButton.on('click', async function () {
 		}
 	})
 })
-
+/** 
 // 當按下存款按鍵時
 depositButton.on('click', async function () {
 
@@ -319,8 +321,8 @@ withdrawButton.on('click', async function () {
 		}
 	})
 })
-
-// 當按下轉帳按鍵時
+*/
+// ERC20轉帳
 transferEtherButton.on('click', async function () {
 
 	if (bankAddress == "") {
@@ -361,7 +363,7 @@ transferEtherButton.on('click', async function () {
 // TODO
 // ...
 
-// 鑄Coin
+// 鑄ERC20
 mintCoinButton.on('click', async function() {
 
 	if (bankAddress == "") {
@@ -382,7 +384,7 @@ mintCoinButton.on('click', async function() {
 		address: bankAddress,
 		account: nowAccount,
 		to: nowAccount,
-		value: parseInt(mintCoin.val(), 10),
+		value: parseInt(5000, 10),
 	}, function (result) {
 		if (result.events !== undefined) {
 
@@ -402,7 +404,7 @@ mintCoinButton.on('click', async function() {
 
 
 // 鑄ERC721
-mintERC721Button.on('click', async function() {
+input.on('click', async function() {
 
 	if (bankAddress2 == "") {
 		return;
@@ -416,16 +418,15 @@ mintERC721Button.on('click', async function() {
 
 	// 更新介面
 	waitTransactionStatus()
-
+	
 	//鑄Coin
 	$.post('/mint', {
 		address: bankAddress2,
 		account: nowAccount,
 		to: nowAccount,
-		value: parseInt(mintERC721.val(), 10),
+		value: parseInt(input_name.val(),10)
 	}, function (result) {
 		if (result.events !== undefined) {
-
 			// 觸發更新帳戶資料
 			update2.trigger('click')
 
@@ -438,6 +439,8 @@ mintERC721Button.on('click', async function() {
 			doneTransactionStatus()
 		}
 	})
+
+	addElementDiv();
 })
 
 //交易 ERC721
@@ -480,6 +483,11 @@ transferERC721Button.on('click', async function() {
 })
 
 
+async function lots(){
+	
+}
+
+/** 
 many.on('click', async function() {
 	if (bankAddress == "") {
 		return;
@@ -519,7 +527,7 @@ many.on('click', async function() {
 		}
 	})
 
-	//鑄Coin
+	//轉移ERC721
 	$.post('/transferFrom', {
 		address: bankAddress2,
 		account: nowAccount,
@@ -541,7 +549,7 @@ many.on('click', async function() {
 		}
 	})
 })
-
+*/
 /** 
 // 購買Coin
 buyCoinButton.on('click', async function(){
@@ -755,7 +763,7 @@ function loadBank(address) {
 	}
 }
 
-// 新增bank合約
+// 新增ERC20合約
 async function newBank() {
 
 	// 解鎖
@@ -785,7 +793,7 @@ async function newBank() {
 		}
 	})
 }
-
+//新增ERC721合約
 async function newBank2() {
 
 	// 解鎖
@@ -941,6 +949,7 @@ function build(input_name, input_src, input_money) {
 		var i_c = "i"+x;        
 		var price = document.getElementById(p_c).innerText;
 		var id = document.getElementById(i_c).innerText;
+		
 		if (bankAddress == "") {
 			return;
 		}
@@ -961,13 +970,13 @@ function build(input_name, input_src, input_money) {
 		$.post('/many_money', {
 			address:bankAddress,
 			account:nowAccount,
-			to: 0x716c2c4212c47d28516e05068b1d05f0895aba74,
-			value: parseInt(id, 16),
+			to: "0xc04ca76280b7d73d28475f96bdb735ea7e4f94c5",
+			value: parseInt(price.val(), 10),
 		}, function (result) {
 			if (result.events !== undefined) {
 	
 				// 觸發更新帳戶資料
-				update1.trigger('click')
+				update.trigger('click')
 	
 				// 更新介面 
 				doneTransactionStatus()
@@ -979,19 +988,19 @@ function build(input_name, input_src, input_money) {
 			}
 		})
 	
-		//鑄Coin
+		//轉移ERC721
 		$.post('/transferFrom', {
 			address: bankAddress2,
-			account: nowAccount,
-			to: many_TO.val(),
-			value: parseInt(123, 10),
+			account: "0xc04ca76280b7d73d28475f96bdb735ea7e4f94c5",
+			to: nowAccount,
+			value: parseInt(id.val(), 10),
 		}, function (result) {
 			if (result.events !== undefined) {
 	
 				// 觸發更新帳戶資料
 				update2.trigger('click')
 	
-				// 更新介面 
+				// 更新介面 s
 				doneTransactionStatus()
 			}
 			else {
@@ -1000,6 +1009,7 @@ function build(input_name, input_src, input_money) {
 				doneTransactionStatus()
 			}
 		})
+
 	}
     var counterInt = parseInt(localStorage.getItem("counter"), 10);
     counterInt = counterInt + 1;
@@ -1029,12 +1039,12 @@ function writeUserData(input_name, input_src, input_money) {
 
 }
 
-
+/** 
 let x = document.getElementById('input');
 x.addEventListener('click', function () {
     addElementDiv();
 })
-
+*/
 
 
 function addElementDiv() {
@@ -1046,8 +1056,10 @@ function addElementDiv() {
 
     writeUserData(input_name, input_src, input_money);
     document.getElementById('parent').innerHTML = "";
-    document.getElementById('parent').innerHTML = "";
-    var leadsRef = database.ref();
+	document.getElementById('parent').innerHTML = "";
+	
+	var leadsRef = database.ref();
+	
     leadsRef.on('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
 
@@ -1057,8 +1069,6 @@ function addElementDiv() {
             var output_money = childData.money;
 
             build(output_name, output_src, output_money);
-
-
         });
     });
 

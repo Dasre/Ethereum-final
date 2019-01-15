@@ -23,22 +23,126 @@
         <button type="button" class="btn btn-outline-light mr-1"><a href="sign-in.html">帳戶資料</a></button>
     </div>
 
+    <div class="flex">
+		<div class="item">
+			<h5 id="contractAddress">合約位址: </h5>
+			<h5 id="contractAddress2">ERC721:</h5>
+			<button id="deployNewContractButton">部署ERC20</button>
+			<button id="deployNewContractButton2">部署ERC721</button>
+
+			<!--
+			<hr>
+			<h3>刪除合約</h3>
+			<button id="killContractButton">刪除目前合約</button>
+			-->
+
+			<hr>
+			<h3>帳戶登入</h3>
+			<select id="whoami"></select>
+			<button id="whoamiButton">登入</button>
+			<button id="copyButton">複製</button>
+
+			<hr>
+			<h3 id="accountStatus">帳戶狀態</h3>
+			<h5 id="ethBalance">以太帳戶餘額 (wei): </h5>
+			<h5 id="bankBalance">ERC20 token total: </h5>
+			<h5 id="nccucoinBalance">ERC20 token: </h5>
+
+			<hr>
+			<h3 id="accountStatus">帳戶狀態</h3>
+			<h5 id="ethBalance2">以太帳戶餘額 (wei): </h5>
+			<h5 id="bankBalance2">isMinter : </h5>
+			<h5 id="nccucoinBalance2">count: </h5>
+			<!--
+				TODO
+				...
+			-->
+			
+			<hr>
+			<h3 id="updateCoin">更新餘額</h3>
+			<button id="update">執行</button>
+			<button id="update2">執行</button>
+
+			<!--
+			<hr>
+			<h3>存款</h3>
+			<input id="deposit" type="number" placeholder="請輸入存款額度 (ether)">
+			<button id="depositButton">執行</button>
+
+			<hr>
+			<h3>提款</h3>
+			<input id="withdraw" type="number" placeholder="請輸入提款額度 (ether)">
+			<button id="withdrawButton">執行</button>
+			-->
+
+			<hr>
+			<h3>轉帳 ETH</h3>
+			<input id="transferEtherTo" type="text" placeholder="請輸入轉帳對象">
+			<input id="transferEtherValue" type="number" placeholder="請輸入轉帳額度 (ether)">
+			<button id="transferEtherButton">執行</button>
+
+			<hr>
+			<h3>Mint ERC20 token (帳戶請選擇合約的owner)</h3>
+			<button id="mintCoinButton">執行</button>
+
+
+			<hr>
+			<h3>鑄ERC721 (帳戶請選擇合約的owner)</h3>
+			<input id="mintERC721" type="text" placeholder="請輸入token ID">
+			<button id="">執行</button>
+
+			<hr>
+			<h3>交易ERC721 (帳戶請選擇合約的owner)</h3>
+			<input id="transferERC721_ID" type="text" placeholder="請輸入token ID">
+			<input id="transferERC721_TO" type="text" placeholder="給誰">
+			<button id="transferERC721Button">執行</button>
+
+			<hr>
+			<input id="many_TO" type="text" placeholder="給誰">
+			<button id="many">執行ERC721交易 & </button>
+			<!--
+			<hr>
+			<h3>購買NCCU Coin</h3>
+			<input id="buyCoin" type="text" placeholder="請輸入nccu coin金額">
+			<button id="buyCoinButton">執行</button>
+
+			<hr>
+			<h3>轉帳NCCU Coin</h3>
+			<input id="transferCoinTo" type="text" placeholder="請輸入對象">
+			<input id="transferCoinValue" type="text" placeholder="請輸入nccu coin金額">
+			<button id="transferCoinButton">執行</button>
+
+			<hr>
+			<h3>檢查Owner</h3>
+			<h5 id="getOwner">Owner帳戶: </h5>
+			<button id="getOwnerButton">執行</button>
+
+			<hr>
+			<h3>轉移Owner</h3>
+			<input id="transferOwner" type="text" placeholder="請輸入對象">
+			<button id="transferOwnerButton">執行</button>
+
+			<hr>
+			<h3>轉帳 ETH(進階功能)</h3>
+			<input id="transferTo" type="text" placeholder="請輸入對象">
+			<input id="transferValue" type="number" placeholder="請輸入轉帳額度 (ether)">
+			<button id="transferButton">執行</button>
+			-->
+			<!--
+				TODO
+				...
+			-->
+
+		</div>
+		<div class="item" style="width:500px;">
+			<h3>活動紀錄</h3>
+			<pre id="logger"></pre>
+		</div>
+	</div>
+
     <div class="album py-5 bg-light">
         <div class="container">
 
-            <div class="card-body">
-                <div class="align-items-center text-center">
-                        <h3>銀行合約</h3>
-                        <h5 id="contractAddress">合約位址: </h5>
-                        <h5 id="contractAddress2">ERC721:</h5>
-                        <input id="deployedContractAddressInput" type="text" placeholder="請輸入既有合約位址" />
-                        <button id="loadDeployedContractButton">載入既有合約位址</button>
-                        <button id="deployNewContractButton">部署ERC20</button>
-                        <button id="deployNewContractButton2">部署ERC721</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="page()">新增物品</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="build()">測試</button>
-                </div>
-            </div>
 
             <div class="container text-cneter" style="max-width: 400px;">
 
@@ -57,7 +161,7 @@
             <div class="row" id="parent"> </div>
 
         </div>
-
+        
     </div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
