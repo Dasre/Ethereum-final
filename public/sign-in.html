@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+
+    
+
     <meta charset="UTF-8">
     <title>Index Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -17,45 +20,44 @@
         </h5>
 
         <h5 class="my-0 mr-md-auto font-weight-normal"></h5>
-        <button type="button" class="btn btn-outline-light mr-1"><a href="sign-in.html">Sign in</a></button>
-        <button type="button" class="btn btn-outline-light mr-1"><a href="sign-up.html">Sign up</a></button>
-        <button type="button" class="btn btn-outline-light mr-1"><a href="sign-in.html">帳戶資料</a></button>
+        <div style="padding-right:10px;"><a class="btn btn-outline-primary" href="sign-in.html">登入</a></div>
+        <div style="padding-right:10px;"><a class="btn btn-outline-primary" href="sign-up.html">註冊</a></div>
+    <a class="btn btn-outline-primary" href="customer.html">帳戶資料</a>
     </div>
+    <h5 id="test">"TEST"</h5>
 
     <div class="container text-cneter" style="max-width: 400px;">
-        <form class="form-signin">
             <div class="text-center">
                 <h1 class="h3 mt-3 mb-3 font-weight-normal">登入你的帳號</h1>
 
-                <label for="inputEmail" class="sr-only">Email</label>
-                <input type="email" id="signup_inputEmail" class="form-control mb-2" placeholder="Email" required
+                <input type="text" id="signin_inputUID" class="form-control mb-2" placeholder="UserId" required
                     autofocus>
 
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="signup_inputPassword" class="form-control mb-2" placeholder="Password"
+                <input type="password" id="signin_inputPassword" class="form-control mb-2" placeholder="Password"
                     required>
 
+                <input type="text" id="signin_Address" class="form-control mb-2" placeholder="block_chain address"
+                    required>
 
-                <button name="signin" type="submit" id="quickstart-sign-in" class="btn btn-lg btn-primary btn-block">登入</button>
+                <button name="signin" type="submit" onclick="login()" id="quickstart-sign-in" class="btn btn-lg btn-primary btn-block">登入</button>
             </div>
-        </form>
     </div>
 
 
     <!-- firebase -->
 
-    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
     <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyCJWMAcz0RZjgl5j-2kaOUM5XnGjzaK8Xs",
-            authDomain: "ethereum-aebc6.firebaseapp.com",
-            databaseURL: "https://ethereum-aebc6.firebaseio.com",
-            projectId: "ethereum-aebc6",
-            storageBucket: "ethereum-aebc6.appspot.com",
-            messagingSenderId: "142284354324"
-        };
-        firebase.initializeApp(config);
+  // Initialize Firebase
+    var config = {
+    apiKey: "AIzaSyDi7nW6q9Pxw6B071OytvmQzYGaTqGcJ3c",
+    authDomain: "nccu-eth-ex1.firebaseapp.com",
+    databaseURL: "https://nccu-eth-ex1.firebaseio.com",
+    projectId: "nccu-eth-ex1",
+    storageBucket: "nccu-eth-ex1.appspot.com",
+    messagingSenderId: "682054052660"
+    };
+    firebase.initializeApp(config);
     </script>
     <!---->
     <script src="./js/sign.js"></script>

@@ -72,6 +72,12 @@ let bankAddress = "";
 let bankAddress2 = "";
 let nowAccount = "";
 
+var thisURL = document.URL;      
+var url = new URL(thisURL);
+var uid = url.searchParams.get("uid");
+var username = url.searchParams.get("username");
+var address = url.searchParams.get("address");
+
 function log(...inputs) {
 	for (let input of inputs) {
 		if (typeof input === 'object') {
@@ -430,6 +436,8 @@ mintCoinButton.on('click', async function() {
 // 鑄ERC721
 input.on('click', async function() {
 
+
+
 	if (bankAddress2 == "") {
 		return;
 	}
@@ -548,8 +556,8 @@ async function lots(){
 	
 }
 
-/** 
-many.on('click', async function() {
+
+$('#many').on('click', async function() {
 	if (bankAddress == "") {
 		return;
 	}
@@ -566,17 +574,32 @@ many.on('click', async function() {
 
 	// 更新介面
 	waitTransactionStatus()
+	console.log('aaa');
+	/*
+	$.ajax({
+		url:'http://localhost:3000/manymoney',
+		method:'POST',
+		data:{address:bankAddress,
+			account:nowAccount,
+			to: "0xa19B77E119FfCFF586d7865Fd0D3a385114fEE40",
+			value: 20
+		},
+		success:function(res){
+			console.log(res)
+		}
+	})
+	*/
 
-	$.post('/many_money', {
+	$.post('/manymoney', {
 		address:bankAddress,
 		account:nowAccount,
-		to: many_TO.val(),
-		value: parseInt(20, 10),
+		to: "0xa19B77E119FfCFF586d7865Fd0D3a385114fEE40",
+		value: 20,
 	}, function (result) {
 		if (result.events !== undefined) {
 
 			// 觸發更新帳戶資料
-			update1.trigger('click')
+			update.trigger('click')
 
 			// 更新介面 
 			doneTransactionStatus()
@@ -586,8 +609,10 @@ many.on('click', async function() {
 			// 更新介面 
 			doneTransactionStatus()
 		}
+		
 	})
-
+	
+	/*
 	//轉移ERC721
 	$.post('/transferFrom', {
 		address: bankAddress2,
@@ -609,8 +634,9 @@ many.on('click', async function() {
 			doneTransactionStatus()
 		}
 	})
+	*/
 })
-*/
+
 /** 
 // 購買Coin
 buyCoinButton.on('click', async function(){
@@ -974,8 +1000,7 @@ function build(input_name, input_src, input_money,key) {
 
     item_img.src = input_src;
     item_img.alt = "Card image cap";
-    item_img.width = "100";
-    item_img.height = "100";
+	item_img.height = "100";
 
     var div4 = document.createElement("div");
     div4.className = "card-body";
@@ -986,7 +1011,7 @@ function build(input_name, input_src, input_money,key) {
     span.className = "text-left";
 
     // span.id = "price_unset";
-    span.innerText = "價格:" + input_money;
+    span.innerText = input_money;
     span.id = "p" + localStorage.getItem("counter");
 
     var button = document.createElement("button");
@@ -996,7 +1021,6 @@ function build(input_name, input_src, input_money,key) {
     button.onclick =  async function(){
 
 		alert("onclick");
-		alert(key1);
 		database.ref(key1).remove();
 		
 
@@ -1007,7 +1031,7 @@ function build(input_name, input_src, input_money,key) {
 		var i_c = "i"+x;        
 		var price = document.getElementById(p_c).innerText;
 		var id = document.getElementById(i_c).innerText;
-		
+		alert(price);
 		if (bankAddress == "") {
 			return;
 		}
@@ -1015,7 +1039,6 @@ function build(input_name, input_src, input_money,key) {
 		if (bankAddress2 == "") {
 			return;
 		}
-		alert('ok')
 		// 解鎖
 		let unlock = await unlockAccount();
 		if (!unlock) {
@@ -1025,12 +1048,28 @@ function build(input_name, input_src, input_money,key) {
 		// 更新介面
 		waitTransactionStatus()
 		
-		
-		$.post('/many_money', {
+		$.ajax({
+			url:'http://localhost:3000/manymoney',
+			method:'POST',
+			data:{address:bankAddress,
+				account:nowAccount,
+				to: "0x9b4807A06F991F2Df6b578Bf931c09cF131Ae828",
+				value: parseInt(price),
+			},
+			success:function(res){
+				console.log(res)
+			}
+		})
+		update.trigger('click')
+	
+				// 更新介面 
+		doneTransactionStatus()
+		/*
+		$.post('/manymoney', {
 			address:bankAddress,
 			account:nowAccount,
-			to: "0x5f87D2aAB9ED4890a687923C0580FD083b67B18D",
-			value: parseInt(price, 10),
+			to: "0x9b4807a06f991f2df6b578bf931c09cf131ae828",
+			value: parseInt(price,10),
 		}, function (result) {
 			if (result.events !== undefined) {
 	
@@ -1045,14 +1084,33 @@ function build(input_name, input_src, input_money,key) {
 				// 更新介面 
 				doneTransactionStatus()
 			}
+			
 		})
-	
+	*/
 		//轉移ERC721
+		$.ajax({
+			url:'http://localhost:3000/transferFrom',
+			method:'POST',
+			data:{address:bankAddress2,
+				account:"0x9b4807a06f991f2df6b578bf931c09cf131ae828",
+				to: nowAccount,
+				value: id,
+			},
+			success:function(res){
+				console.log(res)
+			}
+		})
+
+		update2.trigger('click')
+	
+				// 更新介面 s
+		doneTransactionStatus()
+		/*
 		$.post('/transferFrom', {
 			address: bankAddress2,
-			account: "0x5f87D2aAB9ED4890a687923C0580FD083b67B18D",
+			account: "0x9b4807a06f991f2df6b578bf931c09cf131ae828",
 			to: nowAccount,
-			value: parseInt(id, 10),
+			value: parseInt(20, 10),
 		}, function (result) {
 			if (result.events !== undefined) {
 	
@@ -1068,8 +1126,8 @@ function build(input_name, input_src, input_money,key) {
 				doneTransactionStatus()
 			}
 		})
-
 		
+		*/
 		document.getElementById('parent').innerHTML = "";
 		refresh();
 		
@@ -1094,14 +1152,12 @@ function build(input_name, input_src, input_money,key) {
 }
 
 function writeUserData(input_name, input_src, input_money) {
-    var key = firebase.database().ref().push({
+    firebase.database().ref().push({
         name: input_name,
         src: input_src,
         money: input_money
 
-	}).key;
-
-	return(key);
+	});
 
 	
 	
@@ -1123,12 +1179,11 @@ function addElementDiv() {
     var input_src = document.getElementById("input_src").value;
     var input_money = document.getElementById("input_money").value;
 
-	var key = writeUserData(input_name, input_src, input_money);
-	alert(key);
+	writeUserData(input_name, input_src, input_money);
     document.getElementById('parent').innerHTML = "";
 	
 
-	refresh(key);
+	refresh();
 	
 	
 
@@ -1140,6 +1195,29 @@ function addElementDiv() {
 
 }
 
+// function refresh (){
+// 	var leadsRef = database.ref();
+	
+//     leadsRef.on('value', function (snapshot) {
+//         snapshot.forEach(function (childSnapshot) {
+
+// 			var childData = childSnapshot.val();
+// 			var x = String(childSnapshot.val());
+// 			// alert("childsnapshot"+String(childSnapshot));
+// 			// alert("x:"+x);
+//             var output_name = childData.name;
+//             var output_src = childData.src;
+// 			var output_money = childData.money;
+
+			
+
+
+//             build(output_name, output_src, output_money);
+//         });
+//     });
+
+// }
+
 function refresh (){
 	var leadsRef = database.ref();
 	
@@ -1150,29 +1228,7 @@ function refresh (){
 			var x = String(childSnapshot.val());
 			// alert("childsnapshot"+String(childSnapshot));
 			// alert("x:"+x);
-            var output_name = childData.name;
-            var output_src = childData.src;
-			var output_money = childData.money;
-
-			
-
-
-            build(output_name, output_src, output_money);
-        });
-    });
-
-}
-
-function refresh (key){
-	var leadsRef = database.ref();
-	
-    leadsRef.on('value', function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-
-			var childData = childSnapshot.val();
-			var x = String(childSnapshot.val());
-			// alert("childsnapshot"+String(childSnapshot));
-			// alert("x:"+x);
+			var key = childSnapshot.key;
             var output_name = childData.name;
             var output_src = childData.src;
 			var output_money = childData.money;
