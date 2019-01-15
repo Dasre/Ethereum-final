@@ -63,12 +63,14 @@ let transferERC721Button = $('#transferERC721Button');
 let many = $('#many');
 let many_TO = $('#many_TO');
 
+let addminter_TO = $('addminter_TO');
+let addminter = $('#addminter');
 // TODO
 // ...
 
 let bankAddress = "";
 let bankAddress2 = "";
-let nowAccount = "0xc04ca76280b7d73d28475f96bdb735ea7e4f94c5";
+let nowAccount = "";
 
 function log(...inputs) {
 	for (let input of inputs) {
@@ -182,13 +184,13 @@ update2.on('click', function () {
 			log({
 				address: nowAccount,
 				ethBalance: result.ethBalance,
-				//total: result.total,
+				total: result.isMinter,
 				count: result.count
 			})
 			log('更新帳戶資料')
 
 			$('#ethBalance2').text('以太帳戶餘額 (wei): ' + result.ethBalance)
-			//$('#bankBalance2').text('isMinter: ' + result.isMinter)
+			$('#bankBalance2').text('isMinter: ' + result.isMinter)
 			$('#nccucoinBalance2').text('count: ' + result.count)
 		})
 	}
@@ -384,7 +386,7 @@ mintCoinButton.on('click', async function() {
 		address: bankAddress,
 		account: nowAccount,
 		to: nowAccount,
-		value: parseInt(5000, 10),
+		value: parseInt(10000, 10),
 	}, function (result) {
 		if (result.events !== undefined) {
 
@@ -400,6 +402,28 @@ mintCoinButton.on('click', async function() {
 			doneTransactionStatus()
 		}
 	})
+
+	$.post('/approve', {
+		address:bankAddress,
+		account:nowAccount,
+		to: nowAccount,
+		value: parseInt(10000, 10),
+	}, function (result) {
+		if (result.events !== undefined) {
+
+			// 觸發更新帳戶資料
+			update.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+
 })
 
 
@@ -482,6 +506,43 @@ transferERC721Button.on('click', async function() {
 	})
 })
 
+
+addminter.on('click', async function() {
+
+	if (bankAddress2 == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+
+	//鑄Coin
+	$.post('/addMinter', {
+		address: bankAddress2,
+		account: nowAccount,
+		to: addminter_TO.val(),
+	}, function (result) {
+		if (result.events !== undefined) {
+
+			// 觸發更新帳戶資料
+			update2.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
 
 async function lots(){
 	
@@ -865,21 +926,9 @@ window.onload = function () {
         localStorage.setItem('counter', "0");
     }
 
-    document.getElementById('parent').innerHTML = "";
-    var leadsRef = database.ref();
-    leadsRef.on('value', function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
+	document.getElementById('parent').innerHTML = "";
+	refresh();
 
-            var childData = childSnapshot.val();
-            var output_name = childData.name;
-            var output_src = childData.src;
-            var output_money = childData.money;
-
-            build(output_name, output_src, output_money);
-
-
-        });
-    });
 
 }
 
@@ -892,15 +941,17 @@ function page() {
 }
 
 
-function build(input_name, input_src, input_money) {
+function build(input_name, input_src, input_money,key) {
 
     if (location.href != "http://localhost:3000/sales.html") {
         return
     }
 
-    console.log(input_name);
-    console.log(input_src);
-    console.log(input_money);
+    // alert(input_name);
+    // alert(input_src);
+	// alert(input_money);
+	// alert(key);
+	var key1 = key;
 
     var abc = document.getElementById("parent");
     var div1 = document.createElement("div");
@@ -943,6 +994,13 @@ function build(input_name, input_src, input_money) {
     button.innerText = "購買";
     button.id = "b" + localStorage.getItem("counter");
     button.onclick =  async function(){
+
+		alert("onclick");
+		alert(key1);
+		database.ref(key1).remove();
+		
+
+
         localStorage.setItem("buy",this.id);
         let x = localStorage.getItem('buy').slice(1,);
 		var p_c = "p"+x;
@@ -957,7 +1015,7 @@ function build(input_name, input_src, input_money) {
 		if (bankAddress2 == "") {
 			return;
 		}
-	
+		alert('ok')
 		// 解鎖
 		let unlock = await unlockAccount();
 		if (!unlock) {
@@ -966,12 +1024,13 @@ function build(input_name, input_src, input_money) {
 	
 		// 更新介面
 		waitTransactionStatus()
-	
+		
+		
 		$.post('/many_money', {
 			address:bankAddress,
 			account:nowAccount,
-			to: "0xc04ca76280b7d73d28475f96bdb735ea7e4f94c5",
-			value: parseInt(price.val(), 10),
+			to: "0x5f87D2aAB9ED4890a687923C0580FD083b67B18D",
+			value: parseInt(price, 10),
 		}, function (result) {
 			if (result.events !== undefined) {
 	
@@ -991,9 +1050,9 @@ function build(input_name, input_src, input_money) {
 		//轉移ERC721
 		$.post('/transferFrom', {
 			address: bankAddress2,
-			account: "0xc04ca76280b7d73d28475f96bdb735ea7e4f94c5",
+			account: "0x5f87D2aAB9ED4890a687923C0580FD083b67B18D",
 			to: nowAccount,
-			value: parseInt(id.val(), 10),
+			value: parseInt(id, 10),
 		}, function (result) {
 			if (result.events !== undefined) {
 	
@@ -1009,6 +1068,11 @@ function build(input_name, input_src, input_money) {
 				doneTransactionStatus()
 			}
 		})
+
+		
+		document.getElementById('parent').innerHTML = "";
+		refresh();
+		
 
 	}
     var counterInt = parseInt(localStorage.getItem("counter"), 10);
@@ -1030,12 +1094,17 @@ function build(input_name, input_src, input_money) {
 }
 
 function writeUserData(input_name, input_src, input_money) {
-    firebase.database().ref().push({
+    var key = firebase.database().ref().push({
         name: input_name,
         src: input_src,
         money: input_money
 
-    });
+	}).key;
+
+	return(key);
+
+	
+	
 
 }
 
@@ -1054,28 +1123,65 @@ function addElementDiv() {
     var input_src = document.getElementById("input_src").value;
     var input_money = document.getElementById("input_money").value;
 
-    writeUserData(input_name, input_src, input_money);
+	var key = writeUserData(input_name, input_src, input_money);
+	alert(key);
     document.getElementById('parent').innerHTML = "";
-	document.getElementById('parent').innerHTML = "";
 	
-	var leadsRef = database.ref();
+
+	refresh(key);
 	
-    leadsRef.on('value', function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-
-            var childData = childSnapshot.val();
-            var output_name = childData.name;
-            var output_src = childData.src;
-            var output_money = childData.money;
-
-            build(output_name, output_src, output_money);
-        });
-    });
+	
 
 
     document.getElementById("input_name").value = "";
     document.getElementById("input_src").value = "";
     document.getElementById("input_money").value = "";
 
+
+}
+
+function refresh (){
+	var leadsRef = database.ref();
+	
+    leadsRef.on('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+
+			var childData = childSnapshot.val();
+			var x = String(childSnapshot.val());
+			// alert("childsnapshot"+String(childSnapshot));
+			// alert("x:"+x);
+            var output_name = childData.name;
+            var output_src = childData.src;
+			var output_money = childData.money;
+
+			
+
+
+            build(output_name, output_src, output_money);
+        });
+    });
+
+}
+
+function refresh (key){
+	var leadsRef = database.ref();
+	
+    leadsRef.on('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+
+			var childData = childSnapshot.val();
+			var x = String(childSnapshot.val());
+			// alert("childsnapshot"+String(childSnapshot));
+			// alert("x:"+x);
+            var output_name = childData.name;
+            var output_src = childData.src;
+			var output_money = childData.money;
+
+			
+
+
+            build(output_name, output_src, output_money,key);
+        });
+    });
 
 }

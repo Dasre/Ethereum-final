@@ -77,15 +77,15 @@ router.get('/allBalance2', async function (req, res, next) {
   let bank = new web3.eth.Contract(ERC721j.abi);
   bank.options.address = req.query.address;
   let ethBalance = await web3.eth.getBalance(req.query.account)
-  //let isMinter = await bank.methods.isMinter().call({
-    //from: req.query.account
-  //})
+  let isMinter = await bank.methods.isMinter(req.query.account).call({
+    from: req.query.account
+  })
   let count = await bank.methods.balanceOf(req.query.account).call({
     from: req.query.account
   })
   res.send({
     ethBalance: ethBalance,
-    //isMinter: isMinter,
+    isMinter: isMinter,
     count: count
     //coinBalance: coinBalance,
   })
@@ -246,6 +246,23 @@ router.post('/mintCoin', function (req, res, next) {
     })
 });
 
+router.post('/approve', function (req, res, next) {
+  // TODO
+  // ...
+  let bank = new web3.eth.Contract(contract.abi);
+  bank.options.address = req.body.address;
+  bank.methods.approve(req.body.to, req.body.value).send({
+      from: req.body.account,
+      gas: 3400000
+    })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
+
 router.post('/mint', function (req, res, next) {
   // TODO
   // ...
@@ -263,12 +280,30 @@ router.post('/mint', function (req, res, next) {
     })
 });
 
+router.post('/addMinter', function (req, res, next) {
+  // TODO
+  // ...
+  let bank = new web3.eth.Contract(ERC721j.abi);
+  bank.options.address = req.body.address;
+  bank.methods.addMinter(req.body.address).send({
+      from: req.body.account,
+      gas: 3400000
+    })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
+
+
 router.post('/many_money', function (req, res, next) {
   // TODO
   // ...
   let bank = new web3.eth.Contract(contract.abi);
   bank.options.address = req.body.address;
-  bank.methods.moneyisen(req.body.account, req.body.to, req.body.value).send({
+  bank.methods.transferFrom(req.body.to, req.body.account, req.body.value).send({
       from: req.body.account,
       gas: 3400000
     })
