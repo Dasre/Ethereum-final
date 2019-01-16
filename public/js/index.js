@@ -870,7 +870,7 @@ async function newBank() {
 
 			// 更新合約介面
 			bankAddress = result.contractAddress
-			contractAddress.text('合約位址:' + result.contractAddress)
+			contractAddress.text('ERC20:' + result.contractAddress)
 			deployedContractAddressInput.val(result.contractAddress)
 
 			update.trigger('click');
@@ -1051,7 +1051,7 @@ function build(input_name, input_src, input_money,key) {
 			method:'POST',
 			data:{address:bankAddress,
 				account:nowAccount,
-				to: "0x9b4807A06F991F2Df6b578Bf931c09cF131Ae828",
+				to: "0x0e70b8ea12b0c4e3b83457326e26a408ca92b4da",
 				value: parseInt(price),
 			},
 			success:function(res){
@@ -1090,7 +1090,7 @@ function build(input_name, input_src, input_money,key) {
 			url:'http://localhost:3000/transferFrom',
 			method:'POST',
 			data:{address:bankAddress2,
-				account:"0x9b4807a06f991f2df6b578bf931c09cf131ae828",
+				account:"0x0e70b8ea12b0c4e3b83457326e26a408ca92b4da",
 				to: nowAccount,
 				value: id,
 			},
