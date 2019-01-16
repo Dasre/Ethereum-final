@@ -16,16 +16,17 @@
             <a class="p-2 text-dark" href="index.html">首頁</a>
             <a class="p-2 text-dark" href="sales.html">拍賣</a>
         </h5>
-
+		<!---
         <h5 class="my-0 mr-md-auto font-weight-normal"></h5>
         <button type="button" class="btn btn-outline-light mr-1"><a href="sign-in.html">Sign in</a></button>
         <button type="button" class="btn btn-outline-light mr-1"><a href="sign-up.html">Sign up</a></button>
-        <button type="button" class="btn btn-outline-light mr-1"><a href="sign-in.html">帳戶資料</a></button>
+		<button type="button" class="btn btn-outline-light mr-1"><a href="sign-in.html">帳戶資料</a></button>
+		-->
     </div>
 
     <div class="flex">
 		<div class="item">
-			<h5 id="contractAddress">合約位址: </h5>
+			<h5 id="contractAddress">ERC20: </h5>
 			<h5 id="contractAddress2">ERC721:</h5>
 			<button id="deployNewContractButton">部署ERC20</button>
 			<button id="deployNewContractButton2">部署ERC721</button>
@@ -45,14 +46,14 @@
 			<hr>
 			<h3 id="accountStatus">帳戶狀態</h3>
 			<h5 id="ethBalance">以太帳戶餘額 (wei): </h5>
-			<h5 id="bankBalance">ERC20 token total: </h5>
-			<h5 id="nccucoinBalance">ERC20 token: </h5>
+			<h5 id="bankBalance">ERC20 token 總量: </h5>
+			<h5 id="nccucoinBalance">你擁有的ERC20 token: </h5>
 
 			<hr>
 			<h3 id="accountStatus">帳戶狀態</h3>
 			<h5 id="ethBalance2">以太帳戶餘額 (wei): </h5>
-			<h5 id="bankBalance2">isMinter : </h5>
-			<h5 id="nccucoinBalance2">count: </h5>
+			<h5 id="bankBalance2">是否為ERC721 Minter : </h5>
+			<h5 id="nccucoinBalance2">你擁有的ERC721量: </h5>
 			<!--
 				TODO
 				...
@@ -78,11 +79,11 @@
 			<hr>
 			<h3>轉帳 ERC20 Token</h3>
 			<input id="transferEtherTo" type="text" placeholder="請輸入轉帳對象">
-			<input id="transferEtherValue" type="number" placeholder="請輸入轉帳額度 (ether)">
+			<input id="transferEtherValue" type="number" placeholder="請輸入轉帳額度 (token)">
 			<button id="transferEtherButton">執行</button>
 
 			<hr>
-			<h3>Mint ERC20 token (帳戶請選擇合約的owner)</h3>
+			<h3>Mint ERC20 token</h3>
 			<button id="mintCoinButton">執行</button>
 			<!---
 			<hr>

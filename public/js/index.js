@@ -165,8 +165,8 @@ update.on('click', function () {
 			log('更新帳戶資料')
 
 			$('#ethBalance').text('以太帳戶餘額 (wei): ' + result.ethBalance)
-			$('#bankBalance').text('ERC20 token total: ' + result.total)
-			$('#nccucoinBalance').text('ERC20 token: ' + result.balance)
+			$('#bankBalance').text('ERC20 token 總量: ' + result.total)
+			$('#nccucoinBalance').text('你擁有的ERC20 token: ' + result.balance)
 		})
 	}
 	else {
@@ -174,8 +174,8 @@ update.on('click', function () {
 			account: nowAccount
 		}, function (result) {
 			$('#ethBalance').text('以太帳戶餘額 (wei): ' + result.ethBalance)
-			$('#bankBalance').text('銀行ETH餘額 (wei): ')
-			$('#nccucoinBalance').text('NCCU COIN餘額: ')
+			$('#bankBalance').text('ERC20 token 總量: ')
+			$('#nccucoinBalance').text('你擁有的ERC20 token: ')
 		})
 	}
 })
@@ -196,8 +196,8 @@ update2.on('click', function () {
 			log('更新帳戶資料')
 
 			$('#ethBalance2').text('以太帳戶餘額 (wei): ' + result.ethBalance)
-			$('#bankBalance2').text('isMinter: ' + result.isMinter)
-			$('#nccucoinBalance2').text('count: ' + result.count)
+			$('#bankBalance2').text('是否為ERC721 Minter: ' + result.isMinter)
+			$('#nccucoinBalance2').text('你擁有的ERC721量: ' + result.count)
 		})
 	}
 	else {
@@ -205,8 +205,8 @@ update2.on('click', function () {
 			account: nowAccount
 		}, function (result) {
 			$('#ethBalance2').text('以太帳戶餘額 (wei): ' + result.ethBalance)
-			$('#bankBalance2').text('isMinter : ')
-			$('#nccucoinBalance2').text('count: ')
+			$('#bankBalance2').text('是否為ERC721 Minter : ')
+			$('#nccucoinBalance2').text('你擁有的ERC721量: ')
 		})
 	}
 })
@@ -1020,7 +1020,6 @@ function build(input_name, input_src, input_money,key) {
     button.id = "b" + localStorage.getItem("counter");
     button.onclick =  async function(){
 
-		alert("onclick");
 		database.ref(key1).remove();
 		
 
@@ -1031,7 +1030,6 @@ function build(input_name, input_src, input_money,key) {
 		var i_c = "i"+x;        
 		var price = document.getElementById(p_c).innerText;
 		var id = document.getElementById(i_c).innerText;
-		alert(price);
 		if (bankAddress == "") {
 			return;
 		}
